@@ -1,0 +1,56 @@
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+
+@import 'nativewind/theme';
+
+@layer theme {
+  @theme {
+    /* Brand */
+    --color-primary: #6c4ef5;
+    --color-primary-dark: #5b3bf6;
+    --color-blue: #4d8bff;
+    --color-green: #21c16b;
+
+    /* Semantic */
+    --color-success: #21c16b;
+    --color-warning: #ffc800;
+    --color-streak: #ff8a00;
+    --color-error: #ff4d4f;
+    --color-info: #4d8bff;
+
+    /* Neutrals */
+    --color-text-primary: #0d132b;
+    --color-text-secondary: #6b7280;
+    --color-border: #e5e7eb;
+    --color-surface: #f6f7fb;
+    --color-background: #ffffff;
+
+    /* Font families — one per weight, since RN needs a distinct
+       fontFamily per static (non-variable) Poppins .ttf file.
+       Names must match the keys used in constants/fonts.ts. */
+    --font-poppins-regular: 'Poppins-Regular', sans-serif;
+    --font-poppins-medium: 'Poppins-Medium', sans-serif;
+    --font-poppins-semibold: 'Poppins-SemiBold', sans-serif;
+    --font-poppins-bold: 'Poppins-Bold', sans-serif;
+
+    /* Typography scale (size + line-height only — pair with a
+       font-poppins-* utility above for the correct weight) */
+    --text-h1: 2rem; /* 32px */
+    --text-h1--line-height: 1.2;
+    --text-h2: 1.5rem; /* 24px */
+    --text-h2--line-height: 1.3;
+    --text-h3: 1.25rem; /* 20px */
+    --text-h3--line-height: 1.3;
+    --text-h4: 1rem; /* 16px */
+    --text-h4--line-height: 1.4;
+    --text-body-lg: 1rem; /* 16px */
+    --text-body-lg--line-height: 1.6;
+    --text-body-md: 0.875rem; /* 14px */
+    --text-body-md--line-height: 1.6;
+    --text-body-sm: 0.8125rem; /* 13px */
+    --text-body-sm--line-height: 1.6;
+    --text-caption: 0.6875rem; /* 11px */
+    --text-caption--line-height: 1.4;
+  }
+}
