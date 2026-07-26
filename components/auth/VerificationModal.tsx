@@ -60,11 +60,11 @@ export default function VerificationModal({
               </TouchableOpacity>
             </View>
 
-            <Text className='text-h3 font-poppins-bold text-text-primary'>Check your email</Text>
+            <Text className='text-h3 font-poppins-bold text-text-primary'>Проверьте почту</Text>
             <Text className='mt-2 text-body-md text-text-secondary'>
-              We&apos;ve sent a 6-digit verification code to{' '}
-              <Text className='font-poppins-medium text-text-primary'>{email || 'your email'}</Text>. Enter it below to
-              continue.
+              Мы отправили 6-значный код подтверждения на{' '}
+              <Text className='font-poppins-medium text-text-primary'>{email || 'вашу почту'}</Text>. Введите его ниже,
+              чтобы продолжить.
             </Text>
 
             <Pressable onPress={() => inputRef.current?.focus()} className='mt-6'>
@@ -95,7 +95,7 @@ export default function VerificationModal({
 
             <TouchableOpacity onPress={onResend} className='mt-6 items-center'>
               <Text className='text-body-md text-text-secondary'>
-                Didn&apos;t receive a code? <Text className='font-poppins-semibold text-primary'>Resend</Text>
+                Не пришёл код? <Text className='font-poppins-semibold text-primary'>Отправить снова</Text>
               </Text>
             </TouchableOpacity>
           </View>

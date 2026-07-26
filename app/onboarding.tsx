@@ -19,11 +19,11 @@ export default function Onboarding() {
 
         <View className='mt-10'>
           <Text className='text-h1 text-center font-poppins-bold text-text-primary'>
-            Your AI language{'\n'}
-            <Text className='text-primary'>teacher.</Text>
+            Твой ИИ-репетитор{'\n'}
+            <Text className='text-primary'>по языкам.</Text>
           </Text>
           <Text className='mt-3 text-body-lg text-text-secondary'>
-            Real conversations, personalized lessons, anytime, anywhere.
+            Настоящие разговоры, персональные уроки — где угодно и когда угодно.
           </Text>
         </View>
 
@@ -45,7 +45,7 @@ export default function Onboarding() {
           onPress={() => router.push('/sign-up')}
           className='mb-6 flex-row items-center justify-center gap-2 rounded-full bg-primary py-4'
         >
-          <Text className='text-body-lg font-poppins-semibold text-white'>Get Started</Text>
+          <Text className='text-body-lg font-poppins-semibold text-white'>Начать</Text>
           <Ionicons name='chevron-forward' size={20} color='#FFFFFF' />
         </TouchableOpacity>
       </View>

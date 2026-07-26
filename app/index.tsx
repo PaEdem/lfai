@@ -19,7 +19,7 @@ export default function Index() {
 
       {/* TODO: remove once a real home screen / settings entry exists */}
       <TouchableOpacity onPress={() => signOut()} className='mt-6 rounded-full bg-primary px-6 py-3'>
-        <Text className='text-body-lg font-poppins-semibold text-white'>Sign out</Text>
+        <Text className='text-body-lg font-poppins-semibold text-white'>Выйти</Text>
       </TouchableOpacity>
     </View>
   );
