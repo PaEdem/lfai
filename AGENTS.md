@@ -24,6 +24,17 @@ This is primarily a learning project. The goal is to teach developers how to bui
 
 ---
 
+## Interface Language
+
+The app's interface language is **Russian**. All user-facing text (screen copy, buttons, labels, placeholders, alerts, empty states) must be written in Russian.
+
+- Write new UI strings directly in Russian in JSX — do not introduce an i18n library unless the user explicitly asks for multi-language support.
+- Keep proper nouns / brand name ("lingua") untranslated.
+- Code, comments, variable/type names, and commit messages stay in English as usual.
+- Dynamic error messages coming from third-party SDKs (e.g. Clerk) are currently left in English; localizing them (e.g. via `@clerk/localizations`) is a separate, explicitly-approved task.
+
+---
+
 ## Tech Stack
 
 Use the following stack:

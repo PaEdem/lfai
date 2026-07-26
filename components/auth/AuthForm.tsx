@@ -29,25 +29,25 @@ const COPY: Record<
   }
 > = {
   'sign-up': {
-    title: 'Create your account',
-    subtitle: 'Start your language journey today ✨',
-    cta: 'Sign Up',
-    footerPrompt: 'Already have an account?',
-    footerAction: 'Log in',
+    title: 'Создать аккаунт',
+    subtitle: 'Начни свой путь к языку уже сегодня ✨',
+    cta: 'Зарегистрироваться',
+    footerPrompt: 'Уже есть аккаунт?',
+    footerAction: 'Войти',
     footerHref: '/sign-in',
   },
   'sign-in': {
-    title: 'Welcome back',
-    subtitle: 'Continue your language journey ✨',
-    cta: 'Sign In',
-    footerPrompt: "Don't have an account?",
-    footerAction: 'Sign up',
+    title: 'С возвращением',
+    subtitle: 'Продолжи свой путь к языку ✨',
+    cta: 'Войти',
+    footerPrompt: 'Нет аккаунта?',
+    footerAction: 'Зарегистрироваться',
     footerHref: '/sign-up',
   },
 };
 
 const SOCIAL_PROVIDERS = [
-  { key: 'google', label: 'Continue with Google', icon: 'logo-google', color: '#4285F4' },
+  { key: 'google', label: 'Продолжить с Google', icon: 'logo-google', color: '#4285F4' },
 ] as const;
 
 export default function AuthForm({ mode }: { mode: AuthMode }) {
@@ -131,7 +131,7 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
         router.replace('/');
       }
     } catch {
-      setFormError('Google sign-in failed. Please try again.');
+      setFormError('Не удалось войти через Google. Попробуйте ещё раз.');
     } finally {
       setGoogleSubmitting(false);
     }
@@ -187,7 +187,7 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
             {mode === 'sign-up' && (
               <View className='flex-row items-center rounded-2xl border border-border px-4 py-2'>
                 <View className='flex-1'>
-                  <Text className='text-caption text-text-secondary'>Password</Text>
+                  <Text className='text-caption text-text-secondary'>Пароль</Text>
                   <TextInput
                     value={password}
                     onChangeText={setPassword}
@@ -214,13 +214,13 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
             className='mt-6 items-center rounded-full bg-primary py-4 disabled:opacity-60'
           >
             <Text className='text-body-lg font-poppins-semibold text-white'>
-              {submitting ? 'Please wait…' : copy.cta}
+              {submitting ? 'Подождите…' : copy.cta}
             </Text>
           </TouchableOpacity>
 
           <View className='mt-6 flex-row items-center gap-3'>
             <View className='h-px flex-1 bg-border' />
-            <Text className='text-body-sm text-text-secondary'>or continue with</Text>
+            <Text className='text-body-sm text-text-secondary'>или продолжить с помощью</Text>
             <View className='h-px flex-1 bg-border' />
           </View>
 
