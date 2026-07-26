@@ -1,4 +1,5 @@
 import { images } from '@/constants/images';
+import { useSignIn, useSignUp, useSSO } from '@clerk/expo';
 import { Ionicons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -53,10 +54,88 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
   const router = useRouter();
   const copy = COPY[mode];
 
+  const { signUp } = useSignUp();
+  const { signIn } = useSignIn();
+  const { startSSOFlow } = useSSO();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [verificationVisible, setVerificationVisible] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [googleSubmitting, setGoogleSubmitting] = useState(false);
+
+  const handleSubmit = async () => {
+    setFormError(null);
+    setSubmitting(true);
+
+    const { error } =
+      mode === 'sign-up'
+        ? await signUp.password({ emailAddress: email, password })
+        : await signIn.emailCode.sendCode({ emailAddress: email });
+
+    if (error) {
+      setFormError(error.longMessage ?? error.message);
+      setSubmitting(false);
+      return;
+    }
+
+    if (mode === 'sign-up') {
+      const { error: sendError } = await signUp.verifications.sendEmailCode();
+      if (sendError) {
+        setFormError(sendError.longMessage ?? sendError.message);
+        setSubmitting(false);
+        return;
+      }
+    }
+
+    setSubmitting(false);
+    setVerificationVisible(true);
+  };
+
+  const handleVerify = async (code: string): Promise<string | void> => {
+    const { error } =
+      mode === 'sign-up'
+        ? await signUp.verifications.verifyEmailCode({ code })
+        : await signIn.emailCode.verifyCode({ code });
+
+    if (error) {
+      return error.longMessage ?? error.message;
+    }
+
+    const { error: finalizeError } = mode === 'sign-up' ? await signUp.finalize() : await signIn.finalize();
+    if (finalizeError) {
+      return finalizeError.longMessage ?? finalizeError.message;
+    }
+
+    setVerificationVisible(false);
+    router.replace('/');
+  };
+
+  const handleResend = () => {
+    if (mode === 'sign-up') {
+      void signUp.verifications.sendEmailCode();
+    } else {
+      void signIn.emailCode.sendCode({ emailAddress: email });
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setFormError(null);
+    setGoogleSubmitting(true);
+    try {
+      const { createdSessionId, setActive } = await startSSOFlow({ strategy: 'oauth_google' });
+      if (createdSessionId && setActive) {
+        await setActive({ session: createdSessionId });
+        router.replace('/');
+      }
+    } catch {
+      setFormError('Google sign-in failed. Please try again.');
+    } finally {
+      setGoogleSubmitting(false);
+    }
+  };
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -125,11 +204,18 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
             )}
           </View>
 
+          {mode === 'sign-up' && <View nativeID='clerk-captcha' />}
+
+          {formError && <Text className='mt-4 text-center text-body-sm text-error'>{formError}</Text>}
+
           <TouchableOpacity
-            onPress={() => setVerificationVisible(true)}
-            className='mt-6 items-center rounded-full bg-primary py-4'
+            onPress={handleSubmit}
+            disabled={submitting}
+            className='mt-6 items-center rounded-full bg-primary py-4 disabled:opacity-60'
           >
-            <Text className='text-body-lg font-poppins-semibold text-white'>{copy.cta}</Text>
+            <Text className='text-body-lg font-poppins-semibold text-white'>
+              {submitting ? 'Please wait…' : copy.cta}
+            </Text>
           </TouchableOpacity>
 
           <View className='mt-6 flex-row items-center gap-3'>
@@ -142,8 +228,9 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
             {SOCIAL_PROVIDERS.map((provider) => (
               <TouchableOpacity
                 key={provider.key}
-                onPress={() => console.log(`TODO: wire up ${provider.key} OAuth via Clerk`)}
-                className='flex-row items-center justify-center gap-3 rounded-2xl border border-border py-4'
+                onPress={handleGoogleSignIn}
+                disabled={googleSubmitting}
+                className='flex-row items-center justify-center gap-3 rounded-2xl border border-border py-4 disabled:opacity-60'
               >
                 <Ionicons name={provider.icon} size={20} color={provider.color} />
                 <Text className='text-body-lg font-poppins-medium text-text-primary'>{provider.label}</Text>
@@ -160,7 +247,13 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
         </View>
       </ScrollView>
 
-      <VerificationModal visible={verificationVisible} email={email} onClose={() => setVerificationVisible(false)} />
+      <VerificationModal
+        visible={verificationVisible}
+        email={email}
+        onClose={() => setVerificationVisible(false)}
+        onVerify={handleVerify}
+        onResend={handleResend}
+      />
     </KeyboardAvoidingView>
   );
 }

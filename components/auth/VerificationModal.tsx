@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Modal, Platform, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -8,31 +7,45 @@ export default function VerificationModal({
   visible,
   email,
   onClose,
+  onVerify,
+  onResend,
 }: {
   visible: boolean;
   email: string;
   onClose: () => void;
+  onVerify: (code: string) => Promise<string | void>;
+  onResend: () => void;
 }) {
-  const router = useRouter();
   const inputRef = useRef<TextInput>(null);
   const [code, setCode] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [verifying, setVerifying] = useState(false);
 
   useEffect(() => {
     if (!visible) {
       setCode('');
+      setError(null);
+      setVerifying(false);
       return;
     }
     const focusTimeout = setTimeout(() => inputRef.current?.focus(), 300);
     return () => clearTimeout(focusTimeout);
   }, [visible]);
 
-  const handleChange = (value: string) => {
+  const handleChange = async (value: string) => {
     const digitsOnly = value.replace(/\D/g, '').slice(0, CODE_LENGTH);
     setCode(digitsOnly);
+    setError(null);
 
     if (digitsOnly.length === CODE_LENGTH) {
-      onClose();
-      router.replace('/');
+      setVerifying(true);
+      const errorMessage = await onVerify(digitsOnly);
+      setVerifying(false);
+
+      if (errorMessage) {
+        setError(errorMessage);
+        setCode('');
+      }
     }
   };
 
@@ -60,7 +73,7 @@ export default function VerificationModal({
                   <View
                     key={i}
                     className={`h-14 w-11 items-center justify-center rounded-2xl border ${
-                      i === code.length ? 'border-primary' : 'border-border'
+                      error ? 'border-error' : i === code.length ? 'border-primary' : 'border-border'
                     }`}
                   >
                     <Text className='text-h3 font-poppins-semibold text-text-primary'>{code[i] ?? ''}</Text>
@@ -73,11 +86,14 @@ export default function VerificationModal({
                 onChangeText={handleChange}
                 keyboardType='number-pad'
                 maxLength={CODE_LENGTH}
+                editable={!verifying}
                 style={{ position: 'absolute', opacity: 0, height: 1, width: 1 }}
               />
             </Pressable>
 
-            <TouchableOpacity onPress={() => console.log('TODO: wire up resend code via Clerk')} className='mt-6 items-center'>
+            {error && <Text className='mt-3 text-center text-body-sm text-error'>{error}</Text>}
+
+            <TouchableOpacity onPress={onResend} className='mt-6 items-center'>
               <Text className='text-body-md text-text-secondary'>
                 Didn&apos;t receive a code? <Text className='font-poppins-semibold text-primary'>Resend</Text>
               </Text>
