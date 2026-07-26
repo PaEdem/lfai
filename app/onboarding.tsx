@@ -13,12 +13,12 @@ export default function Onboarding() {
 
       <View className='flex-1 px-6'>
         <View className='flex-row items-center justify-center gap-2 pt-2'>
-          <Image source={images.mascotLogo} className='h-10 w-10' resizeMode='contain' />
-          <Text className='text-h2 font-poppins-bold text-text-primary'>lingua</Text>
+          <Image source={images.mascotLogo} className='h-6 w-6' resizeMode='contain' />
+          <Text className='text-h2 font-poppins-bold text-text-secondary'>lingua</Text>
         </View>
 
         <View className='mt-10'>
-          <Text className='text-h1 font-poppins-bold text-text-primary'>
+          <Text className='text-h1 text-center font-poppins-bold text-text-primary'>
             Your AI language{'\n'}
             <Text className='text-primary'>teacher.</Text>
           </Text>
@@ -42,7 +42,7 @@ export default function Onboarding() {
         </View>
 
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => router.push('/sign-up')}
           className='mb-6 flex-row items-center justify-center gap-2 rounded-full bg-primary py-4'
         >
           <Text className='text-body-lg font-poppins-semibold text-white'>Get Started</Text>
