@@ -1,5 +1,6 @@
 import { images } from '@/constants/images';
 import { languages } from '@/data/languages';
+import { useLanguageStore } from '@/store/languageStore';
 import type { LanguageCode } from '@/types/learning';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
@@ -10,11 +11,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function LanguageSelection() {
   const router = useRouter();
   const [selectedCode, setSelectedCode] = useState<LanguageCode | null>(null);
+  const setSelectedLanguage = useLanguageStore((state) => state.setSelectedLanguage);
 
   const handleConfirm = () => {
     if (!selectedCode) return;
-    // TODO(prompts/08-zustand.md): persist selection with Zustand + AsyncStorage
-    router.back();
+    setSelectedLanguage(selectedCode);
+    router.replace('/');
   };
 
   return (
