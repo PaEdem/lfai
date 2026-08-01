@@ -1,4 +1,5 @@
 import { images } from '@/constants/images';
+import { posthog } from '@/constants/posthog';
 import { useSignIn, useSignUp, useSSO } from '@clerk/expo';
 import { Ionicons } from '@expo/vector-icons';
 import { Link, useRouter } from 'expo-router';
@@ -90,6 +91,7 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
       }
     }
 
+    posthog?.capture('authentication_code_requested', { authentication_method: mode === 'sign-up' ? 'email_sign_up' : 'email_sign_in' });
     setSubmitting(false);
     setVerificationVisible(true);
   };
@@ -114,6 +116,7 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
   };
 
   const handleResend = () => {
+    posthog?.capture('authentication_code_resent', { authentication_method: mode === 'sign-up' ? 'email_sign_up' : 'email_sign_in' });
     if (mode === 'sign-up') {
       void signUp.verifications.sendEmailCode();
     } else {
@@ -122,6 +125,7 @@ export default function AuthForm({ mode }: { mode: AuthMode }) {
   };
 
   const handleGoogleSignIn = async () => {
+    posthog?.capture('sso_sign_in_started', { provider: 'google' });
     setFormError(null);
     setGoogleSubmitting(true);
     try {
