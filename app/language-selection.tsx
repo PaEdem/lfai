@@ -1,4 +1,5 @@
 import { images } from '@/constants/images';
+import { posthog } from '@/constants/posthog';
 import { languages } from '@/data/languages';
 import { useLanguageStore } from '@/store/languageStore';
 import type { LanguageCode } from '@/types/learning';
@@ -15,6 +16,7 @@ export default function LanguageSelection() {
 
   const handleConfirm = () => {
     if (!selectedCode) return;
+    posthog?.capture('language_selected', { language_code: selectedCode });
     setSelectedLanguage(selectedCode);
     router.replace('/');
   };

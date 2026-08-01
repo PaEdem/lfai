@@ -48,7 +48,7 @@ export function CustomTabBar({ state, descriptors, navigation, insets }: BottomT
     if (!activeLayout) return;
 
     const target = activeLayout.x + activeLayout.width / 2 - CIRCLE_SIZE / 2;
-    circleX.value = withSpring(target, { damping: 16, stiffness: 160 });
+    circleX.value = withSpring(target, { damping: 32, stiffness: 160 });
     circleOpacity.value = withTiming(1, { duration: 150 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.index, activeLayout?.x, activeLayout?.width]);

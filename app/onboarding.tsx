@@ -1,4 +1,5 @@
 import { images } from '@/constants/images';
+import { posthog } from '@/constants/posthog';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
@@ -42,7 +43,10 @@ export default function Onboarding() {
         </View>
 
         <TouchableOpacity
-          onPress={() => router.push('/sign-up')}
+          onPress={() => {
+            posthog?.capture('onboarding_started');
+            router.push('/sign-up');
+          }}
           className='mb-6 flex-row items-center justify-center gap-2 rounded-full bg-primary py-4'
         >
           <Text className='text-body-lg font-poppins-semibold text-white'>Начать</Text>
