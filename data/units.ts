@@ -33,22 +33,36 @@ export const units: Unit[] = [
     description: 'Числа, еда и напитки, разговоры о городе.',
   },
 
-  // Swedish — заглушка, будет расширена (см. prompts/11-lesson-ui.md)
+  // Swedish
   {
     id: 'sv-unit-1',
     languageCode: 'sv',
     order: 1,
-    title: 'Первые слова',
-    description: 'Базовые приветствия на шведском.',
+    title: 'Знакомство',
+    description: 'Приветствия, знакомство и первые фразы на шведском.',
+  },
+  {
+    id: 'sv-unit-2',
+    languageCode: 'sv',
+    order: 2,
+    title: 'Повседневная жизнь',
+    description: 'Числа, еда и напитки, разговоры о городе.',
   },
 
-  // Norwegian — заглушка, будет расширена (см. prompts/11-lesson-ui.md)
+  // Norwegian
   {
     id: 'no-unit-1',
     languageCode: 'no',
     order: 1,
-    title: 'Первые слова',
-    description: 'Базовые приветствия на норвежском.',
+    title: 'Знакомство',
+    description: 'Приветствия, знакомство и первые фразы на норвежском.',
+  },
+  {
+    id: 'no-unit-2',
+    languageCode: 'no',
+    order: 2,
+    title: 'Повседневная жизнь',
+    description: 'Числа, еда и напитки, разговоры о городе.',
   },
 ];
 
